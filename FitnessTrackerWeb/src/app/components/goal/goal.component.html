@@ -66,6 +66,10 @@
             Description: <strong>{{ goal.description }}</strong> - Start Date :
             <strong>{{ goal.startDate | date}}</strong> - End Date :
             <strong>{{ goal.endDate | date }}</strong>
+            -
+            Achieved: <strong>{{goal.achieved}}</strong>
+            <span *ngIf="!goal.achieved" (click)="updateStatus(goal.id)" nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'"
+            [nzTwotoneColor]=" '#52c41a'" style="margin-left: 15px;"></span>
           </div>
         </div>
       </nz-card>

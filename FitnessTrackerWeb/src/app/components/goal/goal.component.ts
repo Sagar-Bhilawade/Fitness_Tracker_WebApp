@@ -55,4 +55,17 @@ export class GoalComponent {
       }
     )
   }
+
+
+  // Update Goal Status
+  updateStatus(id:number){
+    this.userService.updateGoalStatus(id).subscribe(
+      res=>{
+        this.message.success("Goal updated successfully", {nzDuration: 5000});
+        this.getGoals();
+      }, error=>{
+        this.message.error("Error while updating goal", {nzDuration: 5000});
+      }
+    )
+  }
 }

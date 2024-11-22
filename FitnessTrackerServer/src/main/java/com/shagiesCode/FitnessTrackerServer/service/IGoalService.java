@@ -7,4 +7,5 @@ import java.util.List;
 public interface IGoalService {
     GoalDTO postGoal(GoalDTO dto);
     List<GoalDTO> getGoals();
+    GoalDTO updateStatus(Long id);
 }

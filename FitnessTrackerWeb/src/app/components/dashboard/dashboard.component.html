@@ -1,7 +1,7 @@
 <div nz-row>
 <div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">
 <nz-card nzTitle="Total Calories Burned" style="background-color: aliceblue;">
-  <p>{{statsData.totalWorkoutCaloriesBurned + statsData.totalCaloriesBurned | number}} cal</p>
+  <p>{{statsData?.totalWorkoutCaloriesBurned + statsData.totalCaloriesBurned     || 'Loadin g...'}} cal</p>
 </nz-card>
 </div>
 <div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">

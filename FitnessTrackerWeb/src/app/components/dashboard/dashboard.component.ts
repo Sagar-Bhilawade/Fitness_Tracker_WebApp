@@ -1,7 +1,9 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { SharedModule } from '../../shared/shared.module';
-import Chart, { CategoryScale } from 'chart.js/auto'
+import Chart, { CategoryScale } from 'chart.js/auto';
+import { DatePipe } from '@angular/common';
 
 Chart.register(CategoryScale);
 
@@ -10,83 +12,143 @@ Chart.register(CategoryScale);
   standalone: true,
   imports: [SharedModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrls: ['./dashboard.component.scss'],
+  providers: [DatePipe],
 })
 export class DashboardComponent {
+  statsData: any = {};
+  workouts: any = [];
+  activities: any = [];
+  private workoutChart: Chart | null = null;
+  private activityChart: Chart | null = null;
 
-  statsData: any;
+  @ViewChild('workoutLineChart') private workoutLineChartRef!: ElementRef;
+  @ViewChild('activityLineChart') private activityLineChartRef!: ElementRef;
 
-  workouts: any;
-  activities: any;
-  @ViewChild('workoutLineChart') private workoutLineChartRef: ElementRef;
-  @ViewChild('activityLineChart') private activityLineChartRef: ElementRef;
+  constructor(
+    private userService: UserService,
+    private datePipe: DatePipe,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
-  constructor(private userService: UserService) {
-
-  }
-
-
-  // NgOnInit Starts
+  // Lifecycle Hooks
   ngOnInit(): void {
     this.getStats();
     this.getGraphStats();
-
   }
-  // NgOnInit Ends
 
-  // Get stats Started
+  // Fetch stats
   getStats() {
-    this.userService.getStats().subscribe(
-      res => {
-        console.log(res);
-        this.statsData = res;
-      }
-    )
+    this.userService.getStats().subscribe((res) => {
+      console.log(res);
+      this.statsData = res;
+    });
   }
-  // Get Stats Completed
 
-
-  // Get Graph Data Starts
+  // Fetch graph stats
   getGraphStats() {
-    this.userService.getGraphStats().subscribe(
-      res => {
-        this.workouts = res.workouts;
-        this.activities = res.activities;
-        console.log(this.workouts, this.activities)
-        if (this.workoutLineChartRef || this.activityLineChartRef) {
-          this.createLineChart();
-        }
-      }
-    )
-  }
-  // Get Graph Data Ends
+    this.userService.getGraphStats().subscribe((res) => {
+      this.workouts = res.workouts;
+      this.activities = res.activities;
 
-  // Create a chart starts
-  createLineChart() {
+      if (isPlatformBrowser(this.platformId) && this.workouts && this.activities) {
+        this.createCharts();
+      }
+    });
+  }
+
+  // Create charts for workouts and activities
+  createCharts() {
+    // Destroy existing charts if any
+    if (this.workoutChart) this.workoutChart.destroy();
+    if (this.activityChart) this.activityChart.destroy();
+
     const workoutCtx = this.workoutLineChartRef.nativeElement.getContext('2d');
     const activityCtx = this.activityLineChartRef.nativeElement.getContext('2d');
 
-    new Chart(workoutCtx, {
-      type: 'bar',
+    if (!workoutCtx || !activityCtx) {
+      console.error('Canvas context could not be retrieved.');
+      return;
+    }
+
+    // Create Workout Line Chart
+    this.workoutChart = new Chart(workoutCtx, {
+      type: 'line',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1
-        }]
+        labels: this.workouts.map((data: { date: string }) =>
+          this.datePipe.transform(data.date, 'MM/dd')
+        ),
+        datasets: [
+          {
+            label: 'Calories Burned',
+            data: this.workouts.map((data: { caloriesBurned: number }) => data.caloriesBurned),
+            fill: false,
+            borderWidth: 2,
+            backgroundColor: 'rgba(20,200,120,0.6)',
+            borderColor: 'rgba(0,100,0,1)',
+          },
+          {
+            label: 'Duration',
+            data: this.workouts.map((data: { duration: number }) => data.duration),
+            fill: false,
+            borderWidth: 2,
+            backgroundColor: 'rgba(120,150,200,0.6)',
+            borderColor: 'rgba(0,0,150,1)',
+          },
+        ],
       },
       options: {
+        responsive: true,
         scales: {
           y: {
-            beginAtZero: true
-          }
-        }
-      }
+            beginAtZero: true,
+          },
+        },
+      },
     });
 
+    // Create Activity Line Chart
+    this.activityChart = new Chart(activityCtx, {
+      type: 'line',
+      data: {
+        labels: this.activities.map((data: { date: string }) =>
+          this.datePipe.transform(data.date, 'MM/dd')
+        ),
+        datasets: [
+          {
+            label: 'Calories Burned',
+            data: this.activities.map((data: { caloriesBurned: number }) => data.caloriesBurned),
+            fill: false,
+            borderWidth: 2,
+            backgroundColor: 'rgba(155,150,150,0.6)',
+            borderColor: 'rgba(255,0,0,1)',
+          },
+          {
+            label: 'Steps Taken',
+            data: this.activities.map((data: { steps: number }) => data.steps),
+            fill: false,
+            borderWidth: 2,
+            backgroundColor: 'rgba(255,99,132,0.6)',
+            borderColor: 'rgba(255,0,0,1)',
+          },
+          {
+            label: 'Distance Covered (km)',
+            data: this.activities.map((data: { distance: number }) => data.distance),
+            fill: false,
+            borderWidth: 2,
+            backgroundColor: 'rgba(54,162,235,0.6)',
+            borderColor: 'rgba(0,0,255,1)',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
   }
-
-  //
-
 }

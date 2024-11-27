@@ -15,8 +15,8 @@ public class ActivityController {
     private final IActivityService activityService;
 
     @PostMapping("/activity")
-    public ResponseEntity postAcitivity(@RequestBody ActivityDTO dto) {
-        ActivityDTO createActivity = activityService.postActivity(dto);
+    public ResponseEntity postAcitivity(@RequestBody ActivityDTO dto, @RequestParam Long userId) {
+        ActivityDTO createActivity = activityService.postActivity(dto, userId);
         if (createActivity != null)
             return ResponseEntity.status(HttpStatus.CREATED).body(createActivity);
         else
@@ -28,6 +28,16 @@ public class ActivityController {
         try {
 //            return ResponseEntity.status(HttpStatus.OK).body(activityService.getActivities());
             return ResponseEntity.ok(activityService.getActivities());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Some thing went wrong");
+        }
+    }
+
+    @GetMapping("/your_activities")
+    public ResponseEntity userActivities(@RequestParam Long userId) {
+        try {
+
+            return ResponseEntity.ok(activityService.getUserActivities(userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Some thing went wrong");
         }

@@ -1,14 +1,17 @@
 package com.shagiesCode.FitnessTrackerServer.service;
 
 
+import com.shagiesCode.FitnessTrackerServer.dto.ActivityDTO;
 import com.shagiesCode.FitnessTrackerServer.dto.GraphDTO;
 import com.shagiesCode.FitnessTrackerServer.dto.StatsDTO;
+import com.shagiesCode.FitnessTrackerServer.dto.WorkoutDTO;
 import com.shagiesCode.FitnessTrackerServer.entity.Activity;
 import com.shagiesCode.FitnessTrackerServer.entity.Workout;
 import com.shagiesCode.FitnessTrackerServer.repository.ActivityRepository;
 import com.shagiesCode.FitnessTrackerServer.repository.GoalRepository;
 import com.shagiesCode.FitnessTrackerServer.repository.WorkoutRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ public class StatsServiceImpl implements IStatsService {
     private final ActivityRepository activityRepository;
 
     private final WorkoutRepository workoutRepository;
+
+    private final ModelMapper modelMapper;
 
     public StatsDTO getStats() {
         Long achievedGoals = goalRepository.countAchievedGoals();
@@ -50,8 +55,8 @@ public class StatsServiceImpl implements IStatsService {
         List<Workout> workouts = workoutRepository.findLast7Workouts(pageable);
         List<Activity> activities = activityRepository.findLast7Activities(pageable);
         GraphDTO graphDTO =new GraphDTO();
-        graphDTO.setWorkouts(workouts.stream().map(Workout::getWorkoutDTO).collect(Collectors.toList()));
-        graphDTO.setActivities(activities.stream().map(Activity::getActivityDto).collect(Collectors.toList()));
+        graphDTO.setWorkouts(workouts.stream().map(workout -> this.modelMapper.map(workout, WorkoutDTO.class)).collect(Collectors.toList()));
+        graphDTO.setActivities(activities.stream().map(activity -> this.modelMapper.map(activity, ActivityDTO.class)).collect(Collectors.toList()));
         return graphDTO;
     }
 

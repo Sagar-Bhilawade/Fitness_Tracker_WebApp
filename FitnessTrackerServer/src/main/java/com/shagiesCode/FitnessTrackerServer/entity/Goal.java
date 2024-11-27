@@ -1,10 +1,11 @@
 package com.shagiesCode.FitnessTrackerServer.entity;
 
 import com.shagiesCode.FitnessTrackerServer.dto.GoalDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,22 +13,28 @@ import java.util.Date;
 @Entity
 @Data
 public class Goal {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Description cannot be blank")
     private String description;
+
+    @NotNull(message = "Start date cannot be null")
+    @PastOrPresent(message = "Start date must be in the past or present")
     private Date startDate;
-    private  Date endDate;
+
+    @NotNull(message = "End date cannot be null")
+    @FutureOrPresent(message = "End date must be in the future or present")
+    private Date endDate;
+
     private boolean achieved;
 
-    public GoalDTO getGoalDTO(){
-        GoalDTO goalDTO = new GoalDTO();
-        goalDTO.setId(id);
-        goalDTO.setDescription(description);
-        goalDTO.setStartDate(startDate);
-        goalDTO.setEndDate(endDate);
-        goalDTO.setAchieved(achieved);
-        return goalDTO;
-    }
+    @NotNull(message = "User cannot be null")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+
 }

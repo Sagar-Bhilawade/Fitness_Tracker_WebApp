@@ -15,9 +15,9 @@ public class GoalController {
     private final IGoalService goalService;
 
     @PostMapping("/goal")
-    public ResponseEntity<?> postGoal(@RequestBody GoalDTO goalDTO) {
+    public ResponseEntity<?> postGoal(@RequestBody GoalDTO goalDTO, @RequestParam Long userId) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(goalService.postGoal(goalDTO));
+            return ResponseEntity.status(HttpStatus.CREATED).body(goalService.postGoal(goalDTO, userId));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -33,6 +33,15 @@ public class GoalController {
         }
     }
 
+    @GetMapping("/your_goals")
+    public ResponseEntity<?> userGoals(@RequestParam Long userId) {
+
+        try {
+            return ResponseEntity.ok(goalService.getUserGoals(userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something Went wrong !!");
+        }
+    }
     @GetMapping("/goal/status/{id}")
     public ResponseEntity<?> updateStatus(@PathVariable Long id){
         try{

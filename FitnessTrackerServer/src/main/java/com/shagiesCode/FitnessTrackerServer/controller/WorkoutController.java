@@ -15,10 +15,11 @@ public class WorkoutController {
     private final IWorkoutService workoutService;
 
     @PostMapping("/workout")
-    public ResponseEntity postWorkout(@RequestBody WorkoutDTO workoutDTO) {
+    public ResponseEntity postWorkout(@RequestBody WorkoutDTO workoutDTO, @RequestParam Long userId) {
         try {
-            return ResponseEntity.ok(workoutService.postWorkout(workoutDTO));
+            return ResponseEntity.ok(workoutService.postWorkout(workoutDTO, userId));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
     }
@@ -31,6 +32,14 @@ public class WorkoutController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Some thing went wrong");
         }
+    }
+        @GetMapping("/your_workouts")
+        public ResponseEntity userWorkouts(@RequestParam Long userId) {
+            try {
+                return ResponseEntity.ok(workoutService.getUserWorkouts(userId));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Some thing went wrong");
+            }
     }
 
 

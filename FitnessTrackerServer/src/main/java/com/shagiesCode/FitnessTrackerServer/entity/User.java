@@ -1,9 +1,10 @@
 package com.shagiesCode.FitnessTrackerServer.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 @Data
 @Entity
@@ -37,5 +38,17 @@ public class User {
     @NotNull(message = "Contact number cannot be null")
     @Size(min = 10, max = 10, message = "Phone number must be exactly 10 digits")
     private String contactNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
+
+    // Set default role to USER if not explicitly provided
+    @PrePersist
+    private void setDefaultRole() {
+        if (role == null) {
+            role = Role.USER;
+        }
+    }
 
 }

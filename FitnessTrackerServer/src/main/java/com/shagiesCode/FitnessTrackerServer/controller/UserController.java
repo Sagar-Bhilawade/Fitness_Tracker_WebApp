@@ -1,5 +1,6 @@
 package com.shagiesCode.FitnessTrackerServer.controller;
 
+import com.shagiesCode.FitnessTrackerServer.dto.SignInRequest;
 import com.shagiesCode.FitnessTrackerServer.dto.SignUpDTO;
 import com.shagiesCode.FitnessTrackerServer.service.IUserService;
 import jakarta.validation.Valid;
@@ -23,5 +24,10 @@ public class UserController {
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
+    }
+
+    @GetMapping("/signin")
+    public ResponseEntity<String> getUserByEmailAndPassword(@Valid @RequestBody SignInRequest signInRequest) {
+        return new ResponseEntity<>(userService.getUserByEmailAndPassword(signInRequest.getEmail(), signInRequest.getPassword()), HttpStatus.OK);
     }
 }

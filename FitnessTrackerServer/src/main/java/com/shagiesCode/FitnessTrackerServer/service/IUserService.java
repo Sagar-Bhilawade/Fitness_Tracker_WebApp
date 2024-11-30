@@ -5,4 +5,6 @@ import com.shagiesCode.FitnessTrackerServer.dto.UserDTO;
 
 public interface IUserService {
     UserDTO signUp(SignUpDTO signUpDTO);
+
+    String getUserByEmailAndPassword(String email, String password);
 }

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -26,8 +28,8 @@ public class UserController {
         }
     }
 
-    @GetMapping("/signin")
-    public ResponseEntity<String> getUserByEmailAndPassword(@Valid @RequestBody SignInRequest signInRequest) {
+    @PostMapping("/signin")
+    public ResponseEntity<Map<String, String>> getUserByEmailAndPassword(@Valid @RequestBody SignInRequest signInRequest) {
         return new ResponseEntity<>(userService.getUserByEmailAndPassword(signInRequest.getEmail(), signInRequest.getPassword()), HttpStatus.OK);
     }
 }

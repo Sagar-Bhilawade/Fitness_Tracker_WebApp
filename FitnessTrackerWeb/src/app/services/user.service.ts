@@ -37,6 +37,12 @@ export class UserService {
     getGraphStats():Observable<any>{
       return this.http.get(BASIC_URL+"api/graphs");
     }
+    signin(signinDto:any):Observable<any>{
+      console.log('Sign In Dto ');
+      console.log(signinDto);
 
+
+      return this.http.post(BASIC_URL+"api/signin", signinDto);
+    }
   }
 

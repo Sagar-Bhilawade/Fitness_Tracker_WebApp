@@ -1,0 +1,59 @@
+<div class="signin-container">
+  <form nz-form class="signin-form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <div nz-row nzJustify="center" nzGutter="16">
+      <div nz-col [nzSpan]="24">
+        <h2 class="signin-title">Sign In</h2>
+      </div>
+    </div>
+
+    <div nz-row nzJustify="center" nzGutter="16">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzFor]="'email'" nzRequired>Email</nz-form-label>
+          <nz-form-control [nzErrorTip]="'Please enter a valid email'">
+            <input
+              nz-input
+              formControlName="email"
+              id="email"
+              type="email"
+              placeholder="Please enter your email"
+              required
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzJustify="center" nzGutter="16">
+      <div nz-col [nzSpan]="24">
+        <nz-form-item>
+          <nz-form-label [nzFor]="'password'" nzRequired>Password</nz-form-label>
+          <nz-form-control [nzErrorTip]="'Please enter your password'">
+            <input
+              nz-input
+              formControlName="password"
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              required
+            />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzJustify="center" nzGutter="16">
+      <div nz-col [nzSpan]="24">
+        <button nz-button nzType="primary" nzBlock [disabled]="!signInForm.valid">
+          Sign In
+        </button>
+      </div>
+    </div>
+
+    <div nz-row nzJustify="center" nzGutter="16">
+      <div nz-col [nzSpan]="24" class="signup-link">
+        <a routerLink="/signup">Don't have an account? Sign up</a>
+      </div>
+    </div>
+  </form>
+</div>

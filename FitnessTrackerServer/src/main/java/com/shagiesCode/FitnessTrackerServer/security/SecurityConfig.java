@@ -40,6 +40,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/signup", "/api/signin").permitAll() // Public endpoints
                         .requestMatchers("/api/admin/**").hasRole("ADMIN") // Only ADMIN role can access admin APIs
                         .requestMatchers("/api/**").hasAnyRole("USER", "ADMIN") // All other API endpoints for USER or ADMIN
+                        .requestMatchers(
+                                "/swagger-ui/**", // Swagger UI static resources
+                                "/v3/api-docs/**", // OpenAPI JSON endpoints
+                                "/swagger-ui.html" // Swagger UI main endpoint
+                        ).permitAll() // Allow Swagger-related endpoints
                         .anyRequest().authenticated() // Any other request requires authentication
                 )
                 .httpBasic(Customizer.withDefaults()) // Basic authentication

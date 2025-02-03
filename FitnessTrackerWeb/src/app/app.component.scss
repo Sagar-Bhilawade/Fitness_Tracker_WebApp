@@ -1,81 +1,82 @@
 .layout {
-  min-height: 100vh;
   display: flex;
-  flex-direction: row;
+  min-height: 100vh;
 }
 
-  .nz-sider {
-    background: #001529; // Dark background for the sidebar
-    min-width: 200px;
-    max-width: 200px;
+.sidebar {
+  background-color: #001529;
+  width: 180px;
+  height: 100vh; // Ensure sidebar covers full height
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 16px; // Adjust spacing from the top
+}
+
+.logo {
+  text-align: center;
+  width: 100%;
+  padding-bottom: 8px; // Reduce spacing between the logo and username
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 8px; // Adjust spacing below the avatar
+}
+
+.user-info {
+  color: #fff;
+
+  strong {
+    font-size: 14px;
   }
-    .logo {
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #002140;
-      margin-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-nav {
+  width: 100%; // Ensure the menu takes the full width
+  margin-top: 16px; // Add spacing between the logo and the menu
+  padding-left: 0;
+  list-style: none;
+}
+
+.nav-item {
+  margin: 0;
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #fff;
+    padding: 10px 15px;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
     }
-      .avatar {
-        margin-right: 8px;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-      }
 
-      .user-info {
-        color: #fff;
-
-        strong {
-          font-size: 16px;
-        }
-      }
-
-
-    ul[nz-menu] {
+    .bi {
+      margin-right: 8px;
       font-size: 14px;
     }
 
-      li[nz-menu-item] {
-        margin: 0;
+    &.active {
+      background-color: #1890ff;
+      color: #fff;
 
-        span[nz-icon] {
-          font-size: 16px;
-        }
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.1); // Highlight menu item on hover
-        }
-
-        &.ant-menu-item-selected {
-          background-color: #1890ff; // Highlight selected menu item
-          color: #fff;
-
-          span[nz-icon] {
-            color: #fff;
-          }
-        }
+      .bi {
+        color: #fff;
       }
-
-
-
-  .right-layout {
-    flex-grow: 1; // Allow the content area to fill available space
-    background: #f0f2f5; // Light background for the main content
-  }
-
-    nz-content {
-      margin: 16px;
     }
-      .inner-content {
-        padding: 24px;
-        background: #fff; // White card-style background
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        min-height: calc(100vh - 64px - 32px); // Account for header height and margins
-      }
+  }
+}
 
-
-
+.right-layout {
+  margin-left: 180px; // Adjust for sidebar width
+  flex-grow: 1;
+  background-color: #f0f2f5;
+}

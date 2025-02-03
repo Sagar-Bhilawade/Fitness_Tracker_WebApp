@@ -1,51 +1,60 @@
-import { Component } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { error } from 'console';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-activity',
   standalone: true,
-  imports: [SharedModule],
+  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './activity.component.html',
-  styleUrl: './activity.component.scss'
+  styleUrls: ['./activity.component.scss']
 })
-export class ActivityComponent {
-  gridStyle: { [key: string]: string } = {
-    width: '100%',
-    textAlign: 'center'
-  };
+export class ActivityComponent implements OnInit {
   activityForm!: FormGroup;
-  activities:any;
-  constructor(private fb: FormBuilder, private message: NzMessageService, private userService: UserService) { }
+  activities: any[] = [];
+
+  constructor(private fb: FormBuilder, private userService: UserService) {}
+
   ngOnInit(): void {
     this.activityForm = this.fb.group({
-      caloriesBurned: [null, [Validators.required]],
-      steps: [null, [Validators.required]],
-      distance: [null, [Validators.required]],
-      date: [null, [Validators.required]],
+      caloriesBurned: [null, [Validators.required, Validators.min(1)]],
+      steps: [null, [Validators.required, Validators.min(1)]],
+      distance: [null, [Validators.required, Validators.min(0.1)]],
+      date: [null, [Validators.required]]
     });
 
     this.getAllActivities();
   }
+
+  // Submit Form
   submitForm() {
-    this.userService.postActivity(this.activityForm.value).subscribe(res => {
-      this.message.success("Activity Posted Successfull", { nzDuration: 5000 })
-      this.activityForm.reset();
-      this.getAllActivities();
-    }, error => {
-      this.message.error("Error while posting activity", { nzDuration: 5000 })
-    },
-    )
+    if (this.activityForm.invalid) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    this.userService.postActivity(this.activityForm.value).subscribe(
+      res => {
+        alert("Activity posted successfully!");
+        this.activityForm.reset();
+        this.getAllActivities();
+      },
+      error => {
+        alert("Error while posting activity. Please try again.");
+      }
+    );
   }
 
-
-  getAllActivities(){
-    this.userService.getActivities().subscribe(res=>{
-        this.activities =res;
-        console.log(this.activities)
-    })
+  // Fetch Activities
+  getAllActivities() {
+    this.userService.getActivities().subscribe(
+      res => {
+        this.activities = res;
+      },
+      error => {
+        alert("Error fetching activities. Please try again.");
+      }
+    );
   }
 }

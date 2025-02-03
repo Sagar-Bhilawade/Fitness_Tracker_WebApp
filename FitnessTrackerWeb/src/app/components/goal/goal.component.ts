@@ -1,25 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { UserService } from '../../services/user.service';
-import { SharedModule } from '../../shared/shared.module';
-import { error } from 'console';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-goal',
   standalone: true,
-  imports: [SharedModule],
+  imports: [CommonModule, ReactiveFormsModule], // ✅ Import required modules
   templateUrl: './goal.component.html',
-  styleUrl: './goal.component.scss'
+  styleUrls: ['./goal.component.scss'] // ✅ Fix property name
 })
-export class GoalComponent {
+export class GoalComponent implements OnInit {
   gridStyle: { [key: string]: string } = {
     width: '100%',
     textAlign: 'center'
   };
+
   goalForm!: FormGroup;
-  goals:any;
-  constructor(private fb: FormBuilder, private message: NzMessageService, private userService: UserService) { }
+  goals: any;
+
+  constructor(private fb: FormBuilder, private userService: UserService) { }
+
   ngOnInit(): void {
     this.goalForm = this.fb.group({
       description: [null, [Validators.required]],
@@ -30,42 +32,47 @@ export class GoalComponent {
     this.getGoals();
   }
 
-
-
   // Form Submit
   submitForm() {
+    if (this.goalForm.invalid) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     this.userService.postGoal(this.goalForm.value).subscribe(
       res => {
-           this.message.success("Goal Posted Succesfully",{nzDuration:5000});
-           this.goalForm.reset();
-           this.getGoals();
-      }, error => {
-        this.message.error("Error while posting goal", { nzDuration: 5000 })
+        alert("Goal Posted Successfully!");
+        this.goalForm.reset();
+        this.getGoals();
+      },
+      error => {
+        alert("Error while posting goal. Please try again.");
       }
-
-    )
+    );
   }
-
 
   // Get Goals
-  getGoals(){
+  getGoals() {
     this.userService.getGoals().subscribe(
-      res=>{
+      res => {
         this.goals = res;
+      },
+      error => {
+        alert("Error fetching goals. Please try again.");
       }
-    )
+    );
   }
 
-
   // Update Goal Status
-  updateStatus(id:number){
+  updateStatus(id: number) {
     this.userService.updateGoalStatus(id).subscribe(
-      res=>{
-        this.message.success("Goal updated successfully", {nzDuration: 5000});
+      res => {
+        alert("Goal updated successfully!");
         this.getGoals();
-      }, error=>{
-        this.message.error("Error while updating goal", {nzDuration: 5000});
+      },
+      error => {
+        alert("Error while updating goal. Please try again.");
       }
-    )
+    );
   }
 }

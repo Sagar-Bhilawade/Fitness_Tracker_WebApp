@@ -1,7 +1,6 @@
 import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { UserService } from '../../services/user.service';
-import { SharedModule } from '../../shared/shared.module';
 import Chart, { CategoryScale } from 'chart.js/auto';
 import { DatePipe } from '@angular/common';
 
@@ -10,7 +9,7 @@ Chart.register(CategoryScale);
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SharedModule],
+  imports: [CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   providers: [DatePipe],

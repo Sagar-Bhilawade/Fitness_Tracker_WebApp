@@ -1,22 +1,14 @@
 .signin-container {
-  max-width: 400px;
-  margin: 50px auto;
+  max-width: 700px; // Increased from 500px
+  margin: 0 auto;
   padding: 20px;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .signin-title {
-  text-align: center;
-  margin-bottom: 20px;
+  font-size: 2.5rem; // Slightly larger title for emphasis
+  font-weight: bold;
 }
 
 .signup-link {
-  text-align: center;
-  margin-top: 15px;
-}
-
-button[nz-button] {
-  margin-top: 10px;
+  margin-top: 20px;
 }

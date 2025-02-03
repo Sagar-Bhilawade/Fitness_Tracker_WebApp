@@ -1,53 +1,77 @@
-<div nz-row>
-<div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">
-<nz-card nzTitle="Total Calories Burned" style="background-color: aliceblue;">
-  <p>{{statsData?.totalWorkoutCaloriesBurned + statsData.totalCaloriesBurned     || 'Loadin g...'}} cal</p>
-</nz-card>
-</div>
-<div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">
-  <nz-card nzTitle="Total Distance Covered" style="background-color: aliceblue;">
-    <p>{{statsData.distance | number:'1.1-1'}} Km</p>
-  </nz-card>
-  </div>
-  <div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">
-    <nz-card nzTitle="Total Steps Taken" style="background-color: aliceblue;">
-      <p>{{statsData.steps}}</p>
-    </nz-card>
-    </div>
-</div>
+<!-- Bootstrap-based Layout for Fitness Stats Page -->
 
-
-<div nz-row style="margin-top: 20px;">
-  <div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">
-    <nz-card nzTitle="Total Time Spent" style="background-color: aliceblue;">
-      <p>{{statsData.totalWorkoutDuration}} Hours</p>
-    </nz-card>
-    </div>
-    <div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">
-      <nz-card nzTitle="Achieved Goals" style="background-color: aliceblue;">
-        <p>{{statsData.achievedGoals}}</p>
-      </nz-card>
-      </div>
-      <div nz-col [nzXs]="{span: 5, offset: 1}" [nzLg]="{span: 6, offset: 2}">
-        <nz-card nzTitle="Not Achieved Goals" style="background-color: aliceblue;">
-          <p>{{statsData.nonAchievedGoals}}</p>
-        </nz-card>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Total Calories Burned</div>
+        <div class="card-body">
+          <p class="card-text">{{ statsData?.totalWorkoutCaloriesBurned + statsData.totalCaloriesBurned || 'Loading...' }} cal</p>
         </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Total Distance Covered</div>
+        <div class="card-body">
+          <p class="card-text">{{ statsData.distance | number:'1.1-1' }} Km</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Total Steps Taken</div>
+        <div class="card-body">
+          <p class="card-text">{{ statsData.steps }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Total Time Spent</div>
+        <div class="card-body">
+          <p class="card-text">{{ statsData.totalWorkoutDuration }} Hours</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Achieved Goals</div>
+        <div class="card-body">
+          <p class="card-text">{{ statsData.achievedGoals }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-4 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Not Achieved Goals</div>
+        <div class="card-body">
+          <p class="card-text">{{ statsData.nonAchievedGoals }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graphs Section -->
+  <div class="row mt-4">
+    <div class="col-12 col-md-6 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Recent Workouts</div>
+        <div class="card-body">
+          <canvas #workoutLineChart></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 mb-3">
+      <div class="card bg-light">
+        <div class="card-header">Recent Activities</div>
+        <div class="card-body">
+          <canvas #activityLineChart></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<!-- -------------Graphs -------------- -->
- <div nz-row style="margin-top: 15px;">
-  <div nz-col nzXs="2" nzSm="4" nzMd="6" nzLg="8" nzXl="10">
-   <nz-card nzTitle="Recent Workouts" style="background-color: aliceblue;">
-    <canvas #workoutLineChart></canvas>
-   </nz-card>
-  </div>
-
-  <div nz-col nzXs="20" nzSm="16" nzMd="12" nzLg="8" nzXl="4"></div>
-
-  <div nz-col nzXs="2" nzSm="4" nzMd="6" nzLg="8" nzXl="10">
-    <nz-card nzTitle="Recent Activities" style="background-color: aliceblue;">
-      <canvas #activityLineChart></canvas>
-     </nz-card>
-  </div>
- </div>

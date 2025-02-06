@@ -26,11 +26,24 @@ public class JWTFilter extends OncePerRequestFilter {
     @Autowired
     private ApplicationContext applicationContext;
 
-    private static  final Logger logger = LoggerFactory.getLogger(JWTFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(JWTFilter.class);
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         logger.info("Entering JWTFilter for request: {}", request.getRequestURI());
 
+        // ✅ Handle CORS Preflight Requests (OPTIONS)
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            logger.info("Handling CORS preflight request for: {}", request.getRequestURI());
+            response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200");
+            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
+            response.setHeader("Access-Control-Allow-Credentials", "true");
+            response.setStatus(HttpServletResponse.SC_OK);
+            return; // 🚀 Stop further processing for preflight
+        }
+
+        // ✅ Extract Authorization Header
         String authHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
@@ -42,12 +55,13 @@ public class JWTFilter extends OncePerRequestFilter {
             logger.debug("Extracted username from token: {}", username);
         } else {
             if (authHeader == null) {
-                logger.warn("No Authorization header present in the request: {}", request.getRequestURI());
+                logger.warn("No Authorization header present in request: {}", request.getRequestURI());
             } else {
-                logger.warn("Authorization header does not start with 'Bearer ': {}", authHeader);
+                logger.warn("Authorization header is malformed: {}", authHeader);
             }
         }
 
+        // ✅ Validate Token & Set Authentication
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 UserDetails userDetails = applicationContext.getBean(CustomUserDetailsService.class).loadUserByUsername(username);
@@ -62,7 +76,7 @@ public class JWTFilter extends OncePerRequestFilter {
                     logger.error("Token validation failed for username: {}", username);
                 }
             } catch (Exception e) {
-                logger.error("Unexpected error occurred during JWT filtering: {}", e.getMessage(), e);
+                logger.error("Unexpected error during JWT filtering: {}", e.getMessage(), e);
             }
         } else if (username != null) {
             logger.debug("Security context already contains authentication for: {}",
@@ -72,5 +86,4 @@ public class JWTFilter extends OncePerRequestFilter {
         logger.info("Exiting JWTFilter after processing request: {}", request.getRequestURI());
         filterChain.doFilter(request, response);
     }
-
 }

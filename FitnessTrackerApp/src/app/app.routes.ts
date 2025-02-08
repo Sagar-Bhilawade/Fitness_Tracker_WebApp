@@ -8,11 +8,13 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
-  {path:"activity", component: ActivityComponent},
-  {path:"workout", component: WorkoutComponent},
-  {path:"goal",component: GoalComponent},
-  {path:"dashboard",component: DashboardComponent},
-  {path:"", component: SigninComponent},
-  {path:"signup", component:SignupComponent},
-  {path:"profile", component:ProfileComponent}
+  { path: "activity", component: ActivityComponent },
+  { path: "workout", component: WorkoutComponent },
+  { path: "goal", component: GoalComponent },
+  { path: "dashboard", component: DashboardComponent },
+  { path: "", redirectTo: "signin", pathMatch: "full" }, // Redirect to /signin
+  { path: "signin", component: SigninComponent },
+  { path: "signup", component: SignupComponent },
+  { path: "profile", component: ProfileComponent },
+  { path: "**", redirectTo: "signin" }, // Handle unknown routes
 ];

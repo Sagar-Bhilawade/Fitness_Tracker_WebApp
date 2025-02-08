@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
+import { ToastrService } from 'ngx-toastr'; // ✅ Import Toastr for notifications
 
 @Component({
   selector: 'app-signin',
@@ -15,7 +16,13 @@ import { SharedModule } from '../../shared/shared.module';
 export class SigninComponent {
   signInForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private authService: AuthService,
+    private router: Router,
+    private toastr: ToastrService // ✅ Inject Toastr for alerts
+  ) {
     this.signInForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -26,22 +33,32 @@ export class SigninComponent {
     if (this.signInForm.valid) {
       this.userService.signin(this.signInForm.value).subscribe(
         (res) => {
-          console.log('Request succeeded');
-          console.log(res);
-          this.authService.saveToken(res.token)
-          this.router.navigateByUrl('/dashboard')
+          console.log('✅ Sign-In Request Succeeded:', res);
+
+          // ✅ Check if token exists
+          if (res.token) {
+            this.authService.saveToken(res.token);
+            this.toastr.success('Sign-in successful!', 'Welcome 🎉');
+
+            // ✅ Navigate only if route exists
+            setTimeout(() => {
+              this.router.navigateByUrl('/dashboard').catch(() => {
+                this.toastr.error('Dashboard not found!', 'Navigation Error');
+              });
+            }, 1000);
+          } else {
+            this.toastr.error('Invalid response. Please try again.', 'Error');
+          }
+
+          this.signInForm.reset(); // ✅ Reset only after successful login
         },
         (error) => {
-          console.log('Request Failed');
-          console.log(error);
+          console.error(' Sign-In Request Failed:', error);
+          this.toastr.error('Invalid email or password!', 'Login Failed 🚫');
         }
       );
-
-      const { email, password } = this.signInForm.value;
-      console.log('Sign-In Form Data:', { email, password });
-
-      // Handle sign-in logic here
-      this.signInForm.reset();
+    } else {
+      this.toastr.warning('Please fill in valid details.', 'Form Incomplete');
     }
   }
 }

@@ -1,1 +1,61 @@
-<p>signup works!</p>
+<div class="signup-wrapper">
+  <div class="signup-container">
+    <form class="signup-form" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+      <div class="row justify-content-center mb-2">
+        <div class="col-12 text-center">
+          <h2 class="signup-title">Sign Up</h2>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-2">
+        <div class="col-12 col-md-6">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" formControlName="firstName" id="firstName" required />
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-2">
+        <div class="col-12 col-md-6">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control" formControlName="lastName" id="lastName" required />
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-2">
+        <div class="col-12 col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" formControlName="email" id="email" required />
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-2">
+        <div class="col-12 col-md-6">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" formControlName="password" id="password" required />
+        </div>
+      </div>
+
+      <div class="row justify-content-center mb-2">
+        <div class="col-12 col-md-6">
+          <label for="contactNumber" class="form-label">Contact Number</label>
+          <input type="tel" class="form-control" formControlName="contactNumber" id="contactNumber" required />
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-6">
+          <button type="submit" class="btn btn-primary btn-block w-100" [disabled]="!signUpForm.valid">
+            Sign Up
+          </button>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-12 text-center">
+          <a routerLink="/signin">Already have an account? Sign In</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr'; // ✅ Import ToastrService
 
 @Component({
   selector: 'app-workout',
@@ -26,7 +27,7 @@ export class WorkoutComponent implements OnInit {
     "Tai Chi", "Kickboxing"
   ];
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(private fb: FormBuilder, private userService: UserService, private toastr: ToastrService) {} // ✅ Inject ToastrService
 
   ngOnInit(): void {
     this.userId = this.getUserId();
@@ -48,10 +49,10 @@ export class WorkoutComponent implements OnInit {
     return user ? JSON.parse(user).userId : null;
   }
 
-  // Submit Workout Form
+  // ✅ Submit Workout Form with Toaster Notifications
   submitForm() {
     if (this.workoutForm.invalid || !this.userId) {
-      alert("Please fill in all required fields.");
+      this.toastr.warning('Please fill in all required fields.', 'Warning'); // ⚠️ Validation Warning
       return;
     }
 
@@ -60,18 +61,19 @@ export class WorkoutComponent implements OnInit {
 
     this.userService.postWorkout(workoutData).subscribe({
       next: () => {
-        alert("Workout posted successfully!");
+        this.toastr.success('🏋️ Workout posted successfully!', 'Success'); // ✅ Success Message
         this.workoutForm.reset();
         this.getWorkouts();
       },
       error: (error) => {
-        alert("Error while posting workout: " + error.message);
+        console.error('🚨 Error posting workout:', error);
+        this.toastr.error('Error while posting workout. Please try again.', 'Error'); // ❌ Error Message
       },
       complete: () => (this.isLoading = false)
     });
   }
 
-  // Fetch Past Workouts
+  // ✅ Fetch Past Workouts with Loading State
   getWorkouts() {
     this.isLoading = true;
     this.userService.getWorkouts().subscribe({
@@ -79,7 +81,8 @@ export class WorkoutComponent implements OnInit {
         this.workouts = res;
       },
       error: (error) => {
-        alert("Error fetching workouts: " + error.message);
+        console.error('🚨 Error fetching workouts:', error);
+        this.toastr.error('Error fetching workouts. Please try again.', 'Error'); // ❌ Error Message
       },
       complete: () => (this.isLoading = false)
     });

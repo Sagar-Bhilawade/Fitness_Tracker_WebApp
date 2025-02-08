@@ -20,14 +20,6 @@ export class UserService {
     return throwError(() => new Error('User ID not found. Please log in again.'));
   }
 
-  postActivity(activityDto: any): Observable<any> {
-    const userId = this.getUserId();
-    if (!userId) return this.handleMissingUserId();
-
-    return this.http.post(BASIC_URL + 'api/activity', { ...activityDto, userId }).pipe(
-      catchError(error => throwError(() => new Error('Failed to post activity: ' + error.message)))
-    );
-  }
 
   getActivities(): Observable<any> {
     const userId = this.getUserId();
@@ -40,14 +32,26 @@ export class UserService {
     );
   }
 
-  postWorkout(workoutDto: any): Observable<any> {
-    const userId = this.getUserId();
-    if (!userId) return this.handleMissingUserId();
+// ✅ Updated postWorkout() method
+postWorkout(workoutDto: any): Observable<any> {
+  const userId = this.getUserId();
+  if (!userId) return this.handleMissingUserId();
 
-    return this.http.post(BASIC_URL + 'api/workout', { ...workoutDto, userId }).pipe(
-      catchError(error => throwError(() => new Error('Failed to post workout: ' + error.message)))
-    );
-  }
+  return this.http.post(`${BASIC_URL}api/workout?userId=${userId}`, workoutDto).pipe(
+    catchError(error => throwError(() => new Error('Failed to post workout: ' + error.message)))
+  );
+}
+
+// ✅ Updated postActivity() method
+postActivity(activityDto: any): Observable<any> {
+  const userId = this.getUserId();
+  if (!userId) return this.handleMissingUserId();
+
+  return this.http.post(`${BASIC_URL}api/activity?userId=${userId}`, activityDto).pipe(
+    catchError(error => throwError(() => new Error('Failed to post activity: ' + error.message)))
+  );
+}
+
 
   getWorkouts(): Observable<any> {
     const userId = this.getUserId();
@@ -64,10 +68,11 @@ export class UserService {
     const userId = this.getUserId();
     if (!userId) return this.handleMissingUserId();
 
-    return this.http.post(BASIC_URL + 'api/goal', { ...goalDto, userId }).pipe(
+    return this.http.post(`${BASIC_URL}api/goal?userId=${userId}`, goalDto).pipe(
       catchError(error => throwError(() => new Error('Failed to post goal: ' + error.message)))
     );
   }
+
 
   getGoals(): Observable<any> {
     const userId = this.getUserId();

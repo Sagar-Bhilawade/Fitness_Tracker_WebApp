@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr'; // ✅ Import ToastrService
 
 @Component({
   selector: 'app-activity',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './activity.component.html',
   styleUrls: ['./activity.component.scss']
 })
@@ -14,7 +15,11 @@ export class ActivityComponent implements OnInit {
   activityForm!: FormGroup;
   activities: any[] = [];
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private toastr: ToastrService // ✅ Inject ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.activityForm = this.fb.group({
@@ -27,33 +32,33 @@ export class ActivityComponent implements OnInit {
     this.getAllActivities();
   }
 
-  // Submit Form
+  // ✅ Submit Form with Toaster Notifications
   submitForm() {
     if (this.activityForm.invalid) {
-      alert("Please fill in all required fields.");
+      this.toastr.warning('Please fill in all required fields.', 'Warning'); // ⚠️ Warning
       return;
     }
 
     this.userService.postActivity(this.activityForm.value).subscribe(
       res => {
-        alert("Activity posted successfully!");
+        this.toastr.success('Activity posted successfully!', 'Success'); // ✅ Success Message
         this.activityForm.reset();
         this.getAllActivities();
       },
       error => {
-        alert("Error while posting activity. Please try again.");
+        this.toastr.error('Error while posting activity. Please try again.', 'Error'); // ❌ Error Message
       }
     );
   }
 
-  // Fetch Activities
+  // ✅ Fetch Activities with Error Handling
   getAllActivities() {
     this.userService.getActivities().subscribe(
       res => {
         this.activities = res;
       },
       error => {
-        alert("Error fetching activities. Please try again.");
+        this.toastr.error('Error fetching activities. Please try again.', 'Error'); // ❌ Error Message
       }
     );
   }

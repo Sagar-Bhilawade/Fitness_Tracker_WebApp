@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr'; // ✅ Import ToastrService
 
 @Component({
   selector: 'app-goal',
@@ -21,7 +22,11 @@ export class GoalComponent implements OnInit {
   goals: any[] = []; // ✅ Initialize with an empty array
   isLoading: boolean = false; // ✅ Track loading state
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private toastr: ToastrService // ✅ Inject ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.goalForm = this.fb.group({
@@ -33,29 +38,29 @@ export class GoalComponent implements OnInit {
     this.getGoals();
   }
 
-  // ✅ Form Submission with Loading State
+  // ✅ Form Submission with Toaster Notifications
   submitForm() {
     if (this.goalForm.invalid) {
-      alert("Please fill in all required fields.");
+      this.toastr.warning('Please fill in all required fields.', 'Warning'); // ⚠️ Validation Warning
       return;
     }
 
     this.isLoading = true; // ✅ Start loading
     this.userService.postGoal(this.goalForm.value).subscribe(
       res => {
-        alert("🎯 Goal Posted Successfully!");
+        this.toastr.success('🎯 Goal Posted Successfully!', 'Success'); // ✅ Success Message
         this.goalForm.reset();
         this.getGoals();
       },
       error => {
-        console.error("🚨 Error posting goal:", error);
-        alert("Error while posting goal. Please try again.");
+        console.error('🚨 Error posting goal:', error);
+        this.toastr.error('Error while posting goal. Please try again.', 'Error'); // ❌ Error Message
         this.isLoading = false;
       }
     );
   }
 
-  // ✅ Fetch Goals
+  // ✅ Fetch Goals with Loading Indicator
   getGoals() {
     this.isLoading = true; // ✅ Start loading
     this.userService.getGoals().subscribe(
@@ -64,23 +69,23 @@ export class GoalComponent implements OnInit {
         this.isLoading = false; // ✅ Stop loading
       },
       error => {
-        console.error("🚨 Error fetching goals:", error);
-        alert("Error fetching goals. Please try again.");
+        console.error('🚨 Error fetching goals:', error);
+        this.toastr.error('Error fetching goals. Please try again.', 'Error'); // ❌ Error Message
         this.isLoading = false;
       }
     );
   }
 
-  // ✅ Update Goal Status
+  // ✅ Update Goal Status with Toaster Notifications
   updateStatus(id: number) {
     this.userService.updateGoalStatus(id).subscribe(
       res => {
-        alert("✅ Goal updated successfully!");
+        this.toastr.success('✅ Goal updated successfully!', 'Success'); // ✅ Success Message
         this.getGoals();
       },
       error => {
-        console.error("🚨 Error updating goal:", error);
-        alert("Error while updating goal. Please try again.");
+        console.error('🚨 Error updating goal:', error);
+        this.toastr.error('Error while updating goal. Please try again.', 'Error'); // ❌ Error Message
       }
     );
   }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
@@ -9,9 +9,9 @@ export class AuthService {
 
   getToken(): string | null {
     try {
-      return this.cookieService.get('token') || null; // Get the token from cookies
+      return this.cookieService.get('token') || null; // Get token from cookies
     } catch (error) {
-      console.warn('AuthService: Error accessing cookies', error);
+      console.warn('AuthService: Error accessing token', error);
       return null;
     }
   }
@@ -19,22 +19,44 @@ export class AuthService {
   saveToken(token: string): void {
     try {
       this.cookieService.set('token', token, {
-        expires: 7,
+        expires: 7, // 7-day expiration
         path: '/',
-        secure: location.protocol === 'https:', // Secure in production
-        sameSite: 'Lax', // Change to 'None' if working with CORS
+        secure: location.protocol === 'https:', // Secure in HTTPS
+        sameSite: 'Lax', // Adjust if working with CORS
       });
     } catch (error) {
-      console.warn('AuthService: Error setting token in cookies', error);
+      console.warn('AuthService: Error setting token', error);
     }
   }
 
-
-  clearToken(): void {
+  saveUser(user: any): void {
     try {
-      this.cookieService.delete('token', '/'); // Delete the token cookie
+      localStorage.setItem('user', JSON.stringify(user)); // Store user details
     } catch (error) {
-      console.warn('AuthService: Error clearing token from cookies', error);
+      console.warn('AuthService: Error storing user details', error);
     }
+  }
+
+  getUser(): any {
+    try {
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+    } catch (error) {
+      console.warn('AuthService: Error retrieving user details', error);
+      return null;
+    }
+  }
+
+  clearAuth(): void {
+    try {
+      this.cookieService.delete('token', '/'); // Remove token
+      localStorage.removeItem('user'); // Clear user data
+    } catch (error) {
+      console.warn('AuthService: Error clearing authentication', error);
+    }
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 }

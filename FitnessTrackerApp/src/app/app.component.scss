@@ -32,7 +32,6 @@
 
 .user-info {
   color: #fff;
-
   strong {
     font-size: 14px;
   }
@@ -47,7 +46,6 @@
 
 .nav-item {
   margin: 0;
-
   .nav-link {
     display: flex;
     align-items: center;
@@ -67,7 +65,6 @@
     &.active {
       background-color: #1890ff;
       color: #fff;
-
       .bi {
         color: #fff;
       }
@@ -75,28 +72,51 @@
   }
 }
 
+.logout {
+  margin-top: auto;
+  width: 100%;
+  padding: 10px;
+
+  button {
+    width: 100%;
+    background-color: #d9534f;
+    border: none;
+    padding: 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #c9302c;
+    }
+  }
+}
+
 .right-layout {
-  margin-left: 180px; // Adjust for sidebar width
+  margin-left: 180px;  // Adjust for sidebar width
   flex-grow: 1;
   background-color: #f0f2f5;
+  min-height: 100vh;   // Ensures full viewport height
+  overflow-y: auto;    // Only scroll if needed
+  display: flex;
+  flex-direction: column;
+}
+
+
+// Hide sidebar when on signin/signup pages
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  width: 100vw; // Set full width
+  margin-left: 0 !important; // Override right-layout
 }
 
 html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-.signup-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;  // Ensures the form always fits within the viewport
-  padding: 20px;
-  background-color: #f8f9fa;
-}
-
-.signup-container {
-  width: 100%;
-  max-width: 700px;
 }

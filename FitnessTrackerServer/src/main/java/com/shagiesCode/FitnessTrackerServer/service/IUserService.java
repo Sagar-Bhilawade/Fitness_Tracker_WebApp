@@ -8,5 +8,5 @@ import java.util.Map;
 public interface IUserService {
     UserDTO signUp(SignUpDTO signUpDTO);
 
-    Map<String, String> getUserByEmailAndPassword(String email, String password);
+    Map<String, Object> getUserByEmailAndPassword(String email, String password);
 }

@@ -1,0 +1,53 @@
+// Dashboard Container
+.container {
+  padding: 20px;
+}
+
+// Card Styling
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+  border: none;
+  background: white;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header {
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+    padding: 12px;
+  }
+
+  .card-body {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .card-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+}
+
+// Charts Styling
+canvas {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+}

@@ -33,32 +33,20 @@ export class SigninComponent {
     if (this.signInForm.valid) {
       this.userService.signin(this.signInForm.value).subscribe(
         (res) => {
-          console.log('✅ Sign-In Request Succeeded:', res);
-
-          // ✅ Check if token exists
           if (res.token) {
             this.authService.saveToken(res.token);
-            this.toastr.success('Sign-in successful!', 'Welcome 🎉');
-
-            // ✅ Navigate only if route exists
-            setTimeout(() => {
-              this.router.navigateByUrl('/dashboard').catch(() => {
-                this.toastr.error('Dashboard not found!', 'Navigation Error');
-              });
-            }, 1000);
-          } else {
-            this.toastr.error('Invalid response. Please try again.', 'Error');
+            this.authService.saveUser(res); // ✅ Save user info
+            this.toastr.success(`Welcome, ${res.firstName}!`, 'Sign-in successful 🎉');
+            this.router.navigateByUrl('/dashboard');
           }
-
-          this.signInForm.reset(); // ✅ Reset only after successful login
         },
         (error) => {
-          console.error(' Sign-In Request Failed:', error);
-          this.toastr.error('Invalid email or password!', 'Login Failed 🚫');
+          this.toastr.error(error.error?.error || 'Invalid email or password!', 'Login Failed 🚫');
         }
       );
     } else {
       this.toastr.warning('Please fill in valid details.', 'Form Incomplete');
     }
   }
+
 }

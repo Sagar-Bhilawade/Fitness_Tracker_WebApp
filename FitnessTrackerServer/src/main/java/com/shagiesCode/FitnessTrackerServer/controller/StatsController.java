@@ -4,10 +4,7 @@ import com.shagiesCode.FitnessTrackerServer.dto.GraphDTO;
 import com.shagiesCode.FitnessTrackerServer.service.IStatsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
@@ -18,13 +15,13 @@ public class StatsController {
     private final IStatsService statsService;
 
     @GetMapping("/stats")
-    public ResponseEntity<?> getStats() {
-        return ResponseEntity.ok(statsService.getStats());
+    public ResponseEntity<?> getStats(@RequestParam Long userId) {
+        return ResponseEntity.ok(statsService.getStats(userId));
     }
 
     @GetMapping("/graphs")
-    public ResponseEntity<?> getGraphStats() {
-        GraphDTO graphDTO = statsService.getGraphStats();
+    public ResponseEntity<?> getGraphStats(@RequestParam Long userId) {
+        GraphDTO graphDTO = statsService.getGraphStats(userId);
         if (graphDTO != null) {
             return ResponseEntity.ok(graphDTO);
         } else {

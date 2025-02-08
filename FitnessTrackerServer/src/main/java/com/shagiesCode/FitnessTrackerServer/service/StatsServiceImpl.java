@@ -23,21 +23,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StatsServiceImpl implements IStatsService {
     private final GoalRepository goalRepository;
-
     private final ActivityRepository activityRepository;
-
     private final WorkoutRepository workoutRepository;
-
     private final ModelMapper modelMapper;
 
-    public StatsDTO getStats() {
-        Long achievedGoals = goalRepository.countAchievedGoals();
-        Long notAchievedGoals = goalRepository.countNotAchievedGoals();
-        Integer totalSteps = activityRepository.getTotalSteps();
-        Double totalDistance = activityRepository.getTotalDistance();
-        Integer totalActivityCaloriesBurned = activityRepository.getTotalActivityCaloriesBurned();
-        Integer totalWorkoutDuration = workoutRepository.getTotalWorkoutDuration();
-        Integer totalWorkoutCaloriesBurned = workoutRepository.getTotalWorkoutCaloriesBurned();
+    @Override
+    public StatsDTO getStats(Long userId) {
+        Long achievedGoals = goalRepository.countAchievedGoalsByUserId(userId);
+        Long notAchievedGoals = goalRepository.countNotAchievedGoalsByUserId(userId);
+        Integer totalSteps = activityRepository.getTotalStepsByUserId(userId);
+        Double totalDistance = activityRepository.getTotalDistanceByUserId(userId);
+        Integer totalActivityCaloriesBurned = activityRepository.getTotalActivityCaloriesBurnedByUserId(userId);
+        Integer totalWorkoutDuration = workoutRepository.getTotalWorkoutDurationByUserId(userId);
+        Integer totalWorkoutCaloriesBurned = workoutRepository.getTotalWorkoutCaloriesBurnedByUserId(userId);
+
         StatsDTO dto = new StatsDTO();
         dto.setAchievedGoals(achievedGoals != null ? achievedGoals : 0);
         dto.setNonAchievedGoals(notAchievedGoals != null ? notAchievedGoals : 0);
@@ -47,17 +46,17 @@ public class StatsServiceImpl implements IStatsService {
         dto.setTotalWorkoutDuration(totalWorkoutDuration != null ? totalWorkoutDuration : 0);
         dto.setTotalWorkoutCaloriesBurned(totalWorkoutCaloriesBurned != null ? totalWorkoutCaloriesBurned : 0);
         return dto;
-
     }
 
-    public GraphDTO getGraphStats(){
+    @Override
+    public GraphDTO getGraphStats(Long userId){
         Pageable pageable = PageRequest.of(0,7);
-        List<Workout> workouts = workoutRepository.findLast7Workouts(pageable);
-        List<Activity> activities = activityRepository.findLast7Activities(pageable);
-        GraphDTO graphDTO =new GraphDTO();
+        List<Workout> workouts = workoutRepository.findLast7WorkoutsByUserId(userId, pageable);
+        List<Activity> activities = activityRepository.findLast7ActivitiesByUserId(userId, pageable);
+
+        GraphDTO graphDTO = new GraphDTO();
         graphDTO.setWorkouts(workouts.stream().map(workout -> this.modelMapper.map(workout, WorkoutDTO.class)).collect(Collectors.toList()));
         graphDTO.setActivities(activities.stream().map(activity -> this.modelMapper.map(activity, ActivityDTO.class)).collect(Collectors.toList()));
         return graphDTO;
     }
-
 }

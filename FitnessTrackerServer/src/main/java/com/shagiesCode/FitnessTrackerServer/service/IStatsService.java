@@ -4,6 +4,6 @@ import com.shagiesCode.FitnessTrackerServer.dto.GraphDTO;
 import com.shagiesCode.FitnessTrackerServer.dto.StatsDTO;
 
 public interface IStatsService {
-    StatsDTO getStats();
-    public GraphDTO getGraphStats();
+    StatsDTO getStats(Long userId);
+    GraphDTO getGraphStats(Long userId);
 }

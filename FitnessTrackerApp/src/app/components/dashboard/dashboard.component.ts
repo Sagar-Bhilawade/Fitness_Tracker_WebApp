@@ -20,6 +20,7 @@ export class DashboardComponent {
   activities: any = [];
   private workoutChart: Chart | null = null;
   private activityChart: Chart | null = null;
+  userId: string | null = null;
 
   @ViewChild('workoutLineChart') private workoutLineChartRef!: ElementRef;
   @ViewChild('activityLineChart') private activityLineChartRef!: ElementRef;
@@ -32,8 +33,18 @@ export class DashboardComponent {
 
   // Lifecycle Hooks
   ngOnInit(): void {
-    this.getStats();
-    this.getGraphStats();
+    this.userId = this.getUserId();
+    if (this.userId) {
+      this.getStats();
+      this.getGraphStats();
+    } else {
+      console.warn('DashboardComponent: No userId found, skipping API calls.');
+    }
+  }
+
+  private getUserId(): string | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user).userId : null;
   }
 
   // Fetch stats
@@ -129,14 +140,6 @@ export class DashboardComponent {
             borderWidth: 2,
             backgroundColor: 'rgba(255,99,132,0.6)',
             borderColor: 'rgba(255,0,0,1)',
-          },
-          {
-            label: 'Distance Covered (km)',
-            data: this.activities.map((data: { distance: number }) => data.distance),
-            fill: false,
-            borderWidth: 2,
-            backgroundColor: 'rgba(54,162,235,0.6)',
-            borderColor: 'rgba(0,0,255,1)',
           },
         ],
       },

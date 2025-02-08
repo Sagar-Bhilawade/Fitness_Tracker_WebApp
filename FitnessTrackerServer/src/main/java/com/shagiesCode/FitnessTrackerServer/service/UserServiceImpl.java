@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,16 +42,31 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Map<String, String> getUserByEmailAndPassword(String email, String password) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password));
+    public Map<String, Object> getUserByEmailAndPassword(String email, String password) {
+        Map<String, Object> response = new HashMap<>();
 
-        Map<String, String> response = new HashMap<>();
-        if (authentication.isAuthenticated()) {
-            response.put("token", jwtUtils.generateToken(email));
-        } else {
-            response.put("error", "Authentication failed");
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password));
+
+            if (authentication.isAuthenticated()) {
+                User user = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+
+                response.put("token", jwtUtils.generateToken(email));
+                response.put("userId", user.getId());
+                response.put("firstName", user.getFirstName());
+                response.put("lastName", user.getLastName());
+                response.put("email", user.getEmail());
+
+                return response;
+            }
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid email or password");
         }
-        return response;
+
+        throw new BadCredentialsException("Authentication failed");
     }
+
+
 }

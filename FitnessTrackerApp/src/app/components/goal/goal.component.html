@@ -1,32 +1,44 @@
 <!-- Bootstrap-based Layout for Goal Management Page -->
-<div class="container">
+<div class="container mt-4">
   <div class="row">
-    <h1 class="text-center">Goal</h1>
+    <div class="col-12">
+      <h1 class="text-center my-4">🎯 Goal Management</h1>
+    </div>
   </div>
+
   <div class="row">
+    <!-- Post New Goal -->
     <div class="col-lg-5 col-md-4">
-      <div class="card mt-3">
-        <div class="card-header">Post New Goal</div>
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-header text-center bg-primary text-white fw-bold rounded-top">
+          ✨ Post New Goal
+        </div>
         <div class="card-body">
           <form [formGroup]="goalForm" (ngSubmit)="submitForm()">
             <div class="mb-3">
+              <label for="description" class="form-label">📝 Goal Description</label>
               <textarea
                 class="form-control"
-                placeholder="Enter description"
+                id="description"
+                placeholder="Enter your goal description..."
                 formControlName="description"
                 rows="3"
               ></textarea>
             </div>
+
             <div class="mb-3">
-              <label for="startDate" class="form-label">Start Date</label>
+              <label for="startDate" class="form-label">📅 Start Date</label>
               <input type="date" id="startDate" class="form-control" formControlName="startDate" />
             </div>
+
             <div class="mb-3">
-              <label for="endDate" class="form-label">End Date</label>
+              <label for="endDate" class="form-label">🏁 End Date</label>
               <input type="date" id="endDate" class="form-control" formControlName="endDate" />
             </div>
-            <button type="submit" class="btn btn-primary w-100" [disabled]="goalForm.invalid">
-              Post Goal
+
+            <button type="submit" class="btn btn-success w-100 fw-bold rounded-3" [disabled]="goalForm.invalid">
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+              {{ isLoading ? 'Posting...' : '➕ Post Goal' }}
             </button>
           </form>
         </div>
@@ -35,27 +47,37 @@
 
     <!-- Past Goals -->
     <div class="col-lg-6 col-md-7 offset-md-1">
-      <div class="card mt-3 text-center">
-        <div class="card-header">Past Goals</div>
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-header text-center text-white fw-bold rounded-top" style="background-color: #19752f;">
+          🏆 Past Goals
+        </div>
         <div class="card-body">
-          <div class="list-group">
-            <div class="list-group-item" *ngFor="let goal of goals">
-              <p>
-                <strong>Description:</strong> {{ goal.description }} <br />
-                <strong>Start Date:</strong> {{ goal.startDate | date }} <br />
-                <strong>End Date:</strong> {{ goal.endDate | date }} <br />
-                <strong>Achieved:</strong> {{ goal.achieved }}
-                <span
-                  *ngIf="!goal.achieved"
-                  (click)="updateStatus(goal.id)"
-                  class="ms-2 text-success"
-                  role="button"
-                  aria-label="Mark as achieved"
-                >
-                  ✅
-                </span>
-              </p>
+          <div *ngIf="isLoading" class="text-center">
+            <div class="spinner-border text-warning" role="status"></div>
+          </div>
+
+          <div *ngIf="goals.length > 0" class="list-group">
+            <div class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let goal of goals">
+              <div>
+                <p class="mb-1">
+                  <strong>📌 Description:</strong> {{ goal.description }} <br />
+                  <strong>📅 Start:</strong> {{ goal.startDate | date }} <br />
+                  <strong>🏁 End:</strong> {{ goal.endDate | date }} <br />
+                  <strong>✅ Achieved:</strong>
+                  <span [ngClass]="goal.achieved ? 'text-success fw-bold' : 'text-danger fw-bold'">
+                    {{ goal.achieved ? 'Yes 🎉' : 'No ❌' }}
+                  </span>
+                </p>
+              </div>
+
+              <div *ngIf="!goal.achieved" (click)="updateStatus(goal.id)" class="text-success fs-4" role="button" aria-label="Mark as achieved">
+                ✅
+              </div>
             </div>
+          </div>
+
+          <div *ngIf="goals.length === 0" class="text-center text-muted mt-3">
+            No goals set yet. Start now! 🚀
           </div>
         </div>
       </div>

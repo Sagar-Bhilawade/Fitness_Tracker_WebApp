@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 const BASIC_URL = 'http://localhost:8080/';
 
@@ -15,88 +16,112 @@ export class UserService {
     return user ? JSON.parse(user).userId : null;
   }
 
+  private handleMissingUserId(): Observable<never> {
+    return throwError(() => new Error('User ID not found. Please log in again.'));
+  }
+
   postActivity(activityDto: any): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable(); // Prevent request if userId is missing
+    if (!userId) return this.handleMissingUserId();
 
-    return this.http.post(BASIC_URL + 'api/activity', { ...activityDto, userId });
+    return this.http.post(BASIC_URL + 'api/activity', { ...activityDto, userId }).pipe(
+      catchError(error => throwError(() => new Error('Failed to post activity: ' + error.message)))
+    );
   }
 
   getActivities(): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
     return this.http.get(BASIC_URL + 'api/activities', {
       params: new HttpParams().set('userId', userId),
-    });
+    }).pipe(
+      catchError(error => throwError(() => new Error('Failed to fetch activities: ' + error.message)))
+    );
   }
 
   postWorkout(workoutDto: any): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
-    return this.http.post(BASIC_URL + 'api/workout', { ...workoutDto, userId });
+    return this.http.post(BASIC_URL + 'api/workout', { ...workoutDto, userId }).pipe(
+      catchError(error => throwError(() => new Error('Failed to post workout: ' + error.message)))
+    );
   }
 
   getWorkouts(): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
     return this.http.get(BASIC_URL + 'api/workouts', {
       params: new HttpParams().set('userId', userId),
-    });
+    }).pipe(
+      catchError(error => throwError(() => new Error('Failed to fetch workouts: ' + error.message)))
+    );
   }
 
   postGoal(goalDto: any): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
-    return this.http.post(BASIC_URL + 'api/goal', { ...goalDto, userId });
+    return this.http.post(BASIC_URL + 'api/goal', { ...goalDto, userId }).pipe(
+      catchError(error => throwError(() => new Error('Failed to post goal: ' + error.message)))
+    );
   }
 
   getGoals(): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
     return this.http.get(BASIC_URL + 'api/goals', {
       params: new HttpParams().set('userId', userId),
-    });
+    }).pipe(
+      catchError(error => throwError(() => new Error('Failed to fetch goals: ' + error.message)))
+    );
   }
 
   updateGoalStatus(id: number): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
     return this.http.get(BASIC_URL + `api/goal/status/${id}`, {
       params: new HttpParams().set('userId', userId),
-    });
+    }).pipe(
+      catchError(error => throwError(() => new Error('Failed to update goal status: ' + error.message)))
+    );
   }
 
   getStats(): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
     return this.http.get(BASIC_URL + 'api/stats', {
       params: new HttpParams().set('userId', userId),
-    });
+    }).pipe(
+      catchError(error => throwError(() => new Error('Failed to fetch stats: ' + error.message)))
+    );
   }
 
   getGraphStats(): Observable<any> {
     const userId = this.getUserId();
-    if (!userId) return new Observable();
+    if (!userId) return this.handleMissingUserId();
 
     return this.http.get(BASIC_URL + 'api/graphs', {
       params: new HttpParams().set('userId', userId),
-    });
+    }).pipe(
+      catchError(error => throwError(() => new Error('Failed to fetch graph stats: ' + error.message)))
+    );
   }
 
   signin(signinDto: any): Observable<any> {
-    console.log('Sign In DTO:', signinDto);
-    return this.http.post(BASIC_URL + 'api/signin', signinDto);
+    return this.http.post(BASIC_URL + 'api/signin', signinDto).pipe(
+      catchError(error => throwError(() => new Error('Sign-in failed: ' + error.message)))
+    );
   }
 
   signup(signupDto: any): Observable<any> {
-    console.log('Sign Up DTO:', signupDto);
-    return this.http.post(BASIC_URL + 'api/signup', signupDto);
+    return this.http.post(BASIC_URL + 'api/signup', signupDto).pipe(
+      catchError(error => throwError(() => new Error('Sign-up failed: ' + error.message)))
+    );
   }
 }

@@ -1,54 +1,77 @@
 <div class="container">
   <div class="row">
-    <h1 class="text-center">Activity</h1>
+    <div class="col-12">
+      <h1 class="text-center my-4">🏃‍♂️ Activity Tracker</h1>
+    </div>
   </div>
 
   <div class="row">
     <!-- Post New Activity -->
-    <div class="col-md-4">
-      <div class="card mt-3">
-        <div class="card-header text-center">Post New Activity</div>
+    <div class="col-lg-4">
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-header text-center bg-primary text-white fw-bold rounded-top">
+          🚀 Post New Activity
+        </div>
         <div class="card-body">
           <form [formGroup]="activityForm" (ngSubmit)="submitForm()">
             <div class="mb-3">
-              <label for="caloriesBurned" class="form-label">Calories Burned</label>
+              <label for="caloriesBurned" class="form-label">🔥 Calories Burned</label>
               <input type="number" class="form-control" id="caloriesBurned" formControlName="caloriesBurned" placeholder="Enter calories burned" />
             </div>
 
             <div class="mb-3">
-              <label for="distance" class="form-label">Distance (km)</label>
+              <label for="distance" class="form-label">📏 Distance (km)</label>
               <input type="number" class="form-control" id="distance" formControlName="distance" placeholder="Enter distance covered" />
             </div>
 
             <div class="mb-3">
-              <label for="steps" class="form-label">Steps</label>
+              <label for="steps" class="form-label">👣 Steps</label>
               <input type="number" class="form-control" id="steps" formControlName="steps" placeholder="Enter steps taken" />
             </div>
 
             <div class="mb-3">
-              <label for="date" class="form-label">Date</label>
+              <label for="date" class="form-label">📅 Date</label>
               <input type="date" class="form-control" id="date" formControlName="date" />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100" [disabled]="activityForm.invalid">Post Activity</button>
+            <button type="submit" class="btn btn-success w-100 fw-bold rounded-3" [disabled]="activityForm.invalid">
+              ➕ Post Activity
+            </button>
           </form>
         </div>
       </div>
     </div>
 
     <!-- Past Activities -->
-    <div class="col-md-7 offset-md-1">
-      <div class="card mt-3">
-        <div class="card-header text-center">Past Activities</div>
+    <div class="col-lg-7 offset-lg-1">
+      <div class="card shadow-lg p-3 rounded-4">
+        <div class="card-header text-center text-white fw-bold rounded-top" style="background-color: #19752f;">
+          📜 Past Activities
+        </div>
         <div class="card-body">
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let activity of activities">
-              <strong>Calories Burned:</strong> {{ activity.caloriesBurned }} |
-              <strong>Distance:</strong> {{ activity.distance }} km |
-              <strong>Steps:</strong> {{ activity.steps }} |
-              <strong>Date:</strong> {{ activity.date | date }}
-            </li>
-          </ul>
+          <table class="table table-hover table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>🔥 Calories</th>
+                <th>📏 Distance (km)</th>
+                <th>👣 Steps</th>
+                <th>📅 Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let activity of activities">
+                <td><strong>{{ activity.caloriesBurned }} cal</strong></td>
+                <td><strong>{{ activity.distance }} km</strong></td>
+                <td><strong>{{ activity.steps }} steps</strong></td>
+                <td class="text-center">
+                  <span class="badge bg-info text-dark">{{ activity.date | date }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="activities.length === 0" class="text-center text-muted mt-3">
+            No activities recorded yet. Start tracking now! 🎯
+          </div>
         </div>
       </div>
     </div>

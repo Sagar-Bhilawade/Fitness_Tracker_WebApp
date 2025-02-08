@@ -13,6 +13,9 @@ import { CommonModule } from '@angular/common';
 export class WorkoutComponent implements OnInit {
   workoutForm!: FormGroup;
   workouts: any[] = [];
+  isLoading: boolean = false;
+  userId: string | null = '';
+
   listOfType: string[] = [
     "Strength Training", "Cardio", "Yoga", "Pilates", "CrossFit",
     "HIIT", "Circuit Training", "Aerobics", "Dance Fitness", "Barre",
@@ -26,6 +29,8 @@ export class WorkoutComponent implements OnInit {
   constructor(private fb: FormBuilder, private userService: UserService) {}
 
   ngOnInit(): void {
+    this.userId = this.getUserId();
+
     this.workoutForm = this.fb.group({
       type: [null, [Validators.required]],
       duration: [null, [Validators.required, Validators.min(1)]],
@@ -33,37 +38,50 @@ export class WorkoutComponent implements OnInit {
       caloriesBurned: [null, [Validators.required]]
     });
 
-    this.getWorkouts();
+    if (this.userId) {
+      this.getWorkouts();
+    }
+  }
+
+  private getUserId(): string | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user).userId : null;
   }
 
   // Submit Workout Form
   submitForm() {
-    if (this.workoutForm.invalid) {
+    if (this.workoutForm.invalid || !this.userId) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    this.userService.postWorkout(this.workoutForm.value).subscribe(
-      res => {
+    this.isLoading = true;
+    const workoutData = { ...this.workoutForm.value, userId: this.userId };
+
+    this.userService.postWorkout(workoutData).subscribe({
+      next: () => {
         alert("Workout posted successfully!");
         this.workoutForm.reset();
         this.getWorkouts();
       },
-      error => {
-        alert("Error while posting workout. Please try again.");
-      }
-    );
+      error: (error) => {
+        alert("Error while posting workout: " + error.message);
+      },
+      complete: () => (this.isLoading = false)
+    });
   }
 
   // Fetch Past Workouts
   getWorkouts() {
-    this.userService.getWorkouts().subscribe(
-      res => {
+    this.isLoading = true;
+    this.userService.getWorkouts().subscribe({
+      next: (res) => {
         this.workouts = res;
       },
-      error => {
-        alert("Error fetching workouts. Please try again.");
-      }
-    );
+      error: (error) => {
+        alert("Error fetching workouts: " + error.message);
+      },
+      complete: () => (this.isLoading = false)
+    });
   }
 }

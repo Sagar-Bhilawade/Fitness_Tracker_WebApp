@@ -25,7 +25,7 @@ export class UserService {
     const userId = this.getUserId();
     if (!userId) return this.handleMissingUserId();
 
-    return this.http.get(BASIC_URL + 'api/activities', {
+    return this.http.get(BASIC_URL + 'api/your_activities', {
       params: new HttpParams().set('userId', userId),
     }).pipe(
       catchError(error => throwError(() => new Error('Failed to fetch activities: ' + error.message)))
@@ -57,7 +57,7 @@ postActivity(activityDto: any): Observable<any> {
     const userId = this.getUserId();
     if (!userId) return this.handleMissingUserId();
 
-    return this.http.get(BASIC_URL + 'api/workouts', {
+    return this.http.get(BASIC_URL + 'api/your_workouts', {
       params: new HttpParams().set('userId', userId),
     }).pipe(
       catchError(error => throwError(() => new Error('Failed to fetch workouts: ' + error.message)))
@@ -78,7 +78,7 @@ postActivity(activityDto: any): Observable<any> {
     const userId = this.getUserId();
     if (!userId) return this.handleMissingUserId();
 
-    return this.http.get(BASIC_URL + 'api/goals', {
+    return this.http.get(BASIC_URL + 'api/your_goals', {
       params: new HttpParams().set('userId', userId),
     }).pipe(
       catchError(error => throwError(() => new Error('Failed to fetch goals: ' + error.message)))

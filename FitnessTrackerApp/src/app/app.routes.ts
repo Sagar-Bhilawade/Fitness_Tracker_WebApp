@@ -6,15 +6,16 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
+  { path: "", component: HomeComponent}, // Set Landing Page as default
+  { path: "signin", component: SigninComponent },
+  { path: "signup", component: SignupComponent },
+  { path: "dashboard", component: DashboardComponent },
   { path: "activity", component: ActivityComponent },
   { path: "workout", component: WorkoutComponent },
   { path: "goal", component: GoalComponent },
-  { path: "dashboard", component: DashboardComponent },
-  { path: "", redirectTo: "signin", pathMatch: "full" }, // Redirect to /signin
-  { path: "signin", component: SigninComponent },
-  { path: "signup", component: SignupComponent },
   { path: "profile", component: ProfileComponent },
-  { path: "**", redirectTo: "signin" }, // Handle unknown routes
+  { path: "**", redirectTo: "" }, // Redirect unknown routes to the landing page
 ];

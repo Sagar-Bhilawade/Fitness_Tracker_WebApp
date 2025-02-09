@@ -16,7 +16,7 @@ export class AppComponent {
   constructor(private router: Router, private authService: AuthService) {}
 
   isAuthPage(): boolean {
-    return this.router.url === '/signin' || this.router.url === '/signup';
+    return this.router.url === '/signin' || this.router.url === '/signup' || this.router.url === '/' ;
   }
 
   logout(): void {

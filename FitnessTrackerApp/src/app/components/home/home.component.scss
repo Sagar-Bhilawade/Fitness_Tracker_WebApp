@@ -1,0 +1,87 @@
+.landing-page {
+  position: relative; // Ensures proper child positioning
+  width: 100vw; // Ensures full width
+  height: 100vh; // Ensures full height
+  overflow: hidden; // Prevents unwanted scrollbars
+  background: url('/assets/images/fitness.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.overlay {
+  position: absolute; // Ensures it covers the full screen
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); // Dark overlay for visibility
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  color: white;
+  max-width: 600px;
+  text-align: center;
+  padding: 20px;
+  z-index: 2; // Ensures it's above the overlay
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+  }
+
+  .buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+
+    .btn {
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #1890ff;
+      border: none;
+
+      &:hover {
+        background-color: #1070cc;
+      }
+    }
+
+    .btn-outline-light {
+      border: 2px solid white;
+      color: white;
+      background: transparent;
+
+      &:hover {
+        background: white;
+        color: black;
+      }
+    }
+  }
+}
+
+/* Responsive Fix */
+@media (max-width: 768px) {
+  .content {
+    padding: 10px;
+
+    h1 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+  }
+}

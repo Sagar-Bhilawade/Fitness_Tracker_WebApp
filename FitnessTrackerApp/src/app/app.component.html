@@ -2,14 +2,14 @@
 <div class="layout" *ngIf="!isAuthPage()">
   <!-- Sidebar -->
   <div class="sidebar">
-    <a routerLink="/profile" class="logo d-flex flex-column align-items-center text-decoration-none text-white">
+    <div class="logo d-flex flex-column align-items-center text-decoration-none text-white">
       <img src="https://img.freepik.com/free-vector/fitness-logo-template-flat-style_23-2148220483.jpg?t=st=1731983097~exp=1731986697~hmac=fe9dcb2255a6db6cf5d2a7bdf59f5ed0538f9c3e4ba9ec4bff8d635c35ddd76f&w=740"
            alt="Avatar"
            class="avatar rounded-circle">
       <div class="user-info">
-        <strong>John</strong>
+        <strong>{{ userName }}</strong>
       </div>
-    </a>
+    </div>
 
     <ul class="navbar-nav">
       <li class="nav-item">

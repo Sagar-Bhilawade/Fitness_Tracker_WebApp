@@ -1,13 +1,12 @@
 # Fitness Tracker Web App
 
-A comprehensive **Fitness Tracker Web Application** built to help users and administrators manage and track fitness goals, activities, and workouts. The application features a frontend developed with **Angular**, a backend built using **Spring Boot**, and **SQLite** as the database. 
+A comprehensive **Fitness Tracker Web Application** built to help users to manage and track fitness goals, activities, and workouts. The application features a frontend developed with **Angular**, a backend built using **Spring Boot**, and **SQLite** as the database. 
 
 ---
 
 ## Features
 
-### User Profiles
-1. **User (ROLE_USER)**:
+### User (ROLE_USER):
    - Sign Up and Sign In securely using **JWT-based authentication**.
    - Create, edit, and track personal fitness goals, activities, and workouts.
    - View personalized statistics and graphs for the last 7 days.
@@ -44,11 +43,6 @@ A comprehensive **Fitness Tracker Web Application** built to help users and admi
 - **Activity Tracking**: Log daily activities and monitor progress.
 - **Workout Plans**: Add, edit, and follow workout plans.
 - **Statistics & Graphs**: Visual representation of fitness progress over the last 7 days.
-
-### Features for Admins
-- **User Management**: View and manage all users’ data.
-- **Cumulative Analytics**: Combine and analyze data from all users.
-- **Administrative Privileges**: Full access to user activities and records.
 
 ---
 

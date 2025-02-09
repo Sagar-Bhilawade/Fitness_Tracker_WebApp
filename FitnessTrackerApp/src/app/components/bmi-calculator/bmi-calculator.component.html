@@ -1,0 +1,45 @@
+<div class="bmi-calculator container">
+  <h2 class="text-center">BMI Calculator</h2>
+
+  <!-- Gender Selection -->
+  <div class="gender-selection">
+    <label>
+      <input type="radio" name="gender" value="male" [(ngModel)]="gender" />
+      <i class="bi bi-gender-male"></i> Male
+    </label>
+    <label>
+      <input type="radio" name="gender" value="female" [(ngModel)]="gender" />
+      <i class="bi bi-gender-female"></i> Female
+    </label>
+  </div>
+
+  <!-- Height & Weight Inputs -->
+  <div class="input-group">
+    <label>Height (cm):</label>
+    <input type="number" [(ngModel)]="height" class="form-control" placeholder="Enter height" />
+  </div>
+  <div class="input-group">
+    <label>Weight (kg):</label>
+    <input type="number" [(ngModel)]="weight" class="form-control" placeholder="Enter weight" />
+  </div>
+
+  <!-- Calculate Button -->
+  <button class="btn btn-primary w-100 mt-3" (click)="calculateBMI()">Calculate</button>
+
+  <!-- Result Display -->
+  <div class="result mt-4" *ngIf="bmi">
+    <h3>Your BMI: {{ bmi | number: '1.1-1' }}</h3>
+    <div class="bmi-indicator">
+      <div class="bmi-bar">
+        <div class="bmi-value" [ngStyle]="{ 'left': indicatorPosition + '%' }"></div>
+      </div>
+      <div class="bmi-labels">
+        <span>Underweight</span>
+        <span>Normal</span>
+        <span>Overweight</span>
+        <span>Obese</span>
+      </div>
+    </div>
+    <p class="bmi-suggestion">{{ bmiMessage }}</p>
+  </div>
+</div>

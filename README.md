@@ -1,22 +1,23 @@
 # Fitness Tracker Web App
 
-A comprehensive **Fitness Tracker Web Application** built to help users and administrators manage and track fitness goals, activities, and workouts. The application features a frontend developed with **Angular**, a backend built using **Spring Boot**, and **SQLite** as the database. 
+A comprehensive **Fitness Tracker Web Application** built to help users to manage and track fitness goals, activities, and workouts. The application features a frontend developed with **Angular**, a backend built using **Spring Boot**, and **SQLite** as the database. 
+
+---
+
+## 🎥 Project Demo
+
+[![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](Fitness_Tracker_Demo_Record.mp4)
+
 
 ---
 
 ## Features
 
-### User Profiles
-1. **User (ROLE_USER)**:
+### User (ROLE_USER):
    - Sign Up and Sign In securely using **JWT-based authentication**.
    - Create, edit, and track personal fitness goals, activities, and workouts.
    - View personalized statistics and graphs for the last 7 days.
    - Seamless user experience with a modern, responsive **Angular** interface.
-
-2. **Admin (ROLE_ADMIN)**:
-   - Manage goals, activities, and workouts for all users.
-   - View cumulative statistics and analytics across all users.
-   - Full access to user data and activities.
 
 ---
 
@@ -50,11 +51,6 @@ A comprehensive **Fitness Tracker Web Application** built to help users and admi
 - **Workout Plans**: Add, edit, and follow workout plans.
 - **Statistics & Graphs**: Visual representation of fitness progress over the last 7 days.
 
-### Features for Admins
-- **User Management**: View and manage all users’ data.
-- **Cumulative Analytics**: Combine and analyze data from all users.
-- **Administrative Privileges**: Full access to user activities and records.
-
 ---
 
 ## Installation and Setup
@@ -74,7 +70,7 @@ A comprehensive **Fitness Tracker Web Application** built to help users and admi
 2. **Frontend Setup**
    - Navigate to the Angular frontend directory.
      ```bash
-     cd frontend
+     cd FitnessTrackerApp
      npm install
      npm run build
      ```
@@ -104,12 +100,12 @@ A comprehensive **Fitness Tracker Web Application** built to help users and admi
 ### Build Docker Images
 1. **Frontend**
    ```bash
-   docker build -t fitness-tracker-frontend ./frontend
+   docker build -t fitness-tracker-frontend ./FitnessTrackerApp
    ```
 
 2. **Backend**
    ```bash
-   docker build -t fitness-tracker-backend ./backend
+   docker build -t fitness-tracker-backend ./FitnessTrackerServer
    ```
 
 ### Run Containers
@@ -119,15 +115,14 @@ docker-compose up
 
 ---
 
-
 ## Contributing
 Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request for review.
 
 ---
 
-
-
 ## Contact
 For questions or collaboration, reach out via:
-- **Email**: [bhilawadesagar321@gamil.com](mailto:your-email@example.com)
-- **GitHub**: [https://github.com/Sagar-Bhilawade](https://github.com/your-username)
+- **Email**: [bhilawadesagar321@gmail.com]
+- **GitHub**: [https://github.com/Sagar-Bhilawade]
+
+

@@ -4,6 +4,12 @@ A comprehensive **Fitness Tracker Web Application** built to help users to manag
 
 ---
 
+## Demo
+
+(Fitness_Tracker_Demo_Record.mp4)
+
+---
+
 ## Features
 
 ### User (ROLE_USER):
@@ -108,15 +114,14 @@ docker-compose up
 
 ---
 
-
 ## Contributing
 Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request for review.
 
 ---
 
-
-
 ## Contact
 For questions or collaboration, reach out via:
-- **Email**: [bhilawadesagar321@gamil.com]
+- **Email**: [bhilawadesagar321@gmail.com]
 - **GitHub**: [https://github.com/Sagar-Bhilawade]
+
+

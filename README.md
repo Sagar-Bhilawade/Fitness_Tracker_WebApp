@@ -13,11 +13,6 @@ A comprehensive **Fitness Tracker Web Application** built to help users and admi
    - View personalized statistics and graphs for the last 7 days.
    - Seamless user experience with a modern, responsive **Angular** interface.
 
-2. **Admin (ROLE_ADMIN)**:
-   - Manage goals, activities, and workouts for all users.
-   - View cumulative statistics and analytics across all users.
-   - Full access to user data and activities.
-
 ---
 
 ## Tech Stack
@@ -74,7 +69,7 @@ A comprehensive **Fitness Tracker Web Application** built to help users and admi
 2. **Frontend Setup**
    - Navigate to the Angular frontend directory.
      ```bash
-     cd frontend
+     cd FitnessTrackerApp
      npm install
      npm run build
      ```
@@ -104,12 +99,12 @@ A comprehensive **Fitness Tracker Web Application** built to help users and admi
 ### Build Docker Images
 1. **Frontend**
    ```bash
-   docker build -t fitness-tracker-frontend ./frontend
+   docker build -t fitness-tracker-frontend ./FitnessTrackerApp
    ```
 
 2. **Backend**
    ```bash
-   docker build -t fitness-tracker-backend ./backend
+   docker build -t fitness-tracker-backend ./FitnessTrackerServer
    ```
 
 ### Run Containers
@@ -129,5 +124,5 @@ Contributions are welcome! Please fork the repository, create a feature branch, 
 
 ## Contact
 For questions or collaboration, reach out via:
-- **Email**: [bhilawadesagar321@gamil.com](mailto:your-email@example.com)
-- **GitHub**: [https://github.com/Sagar-Bhilawade](https://github.com/your-username)
+- **Email**: [bhilawadesagar321@gamil.com]
+- **GitHub**: [https://github.com/Sagar-Bhilawade]

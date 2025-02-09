@@ -6,7 +6,7 @@ A comprehensive **Fitness Tracker Web Application** built to help users to manag
 
 ## 🎥 Project Demo
 
-[![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](Fitness_Tracker_Demo_Record.mp4)
+[![Watch the demo](HomePage.png)](Fitness_Tracker_Demo_Record.mp4)
 
 
 ---
